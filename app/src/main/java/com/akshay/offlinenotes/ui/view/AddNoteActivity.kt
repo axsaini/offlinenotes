@@ -42,6 +42,7 @@ class AddNoteActivity : AppCompatActivity() {
         noteModel?.let {
             binding.title.setText(it.title ?: "")
             binding.description.setText(it.description ?: "")
+            binding.category.setText(it.category ?: "")
         }
 
     }
@@ -68,17 +69,20 @@ class AddNoteActivity : AppCompatActivity() {
             binding.title.error = getString(R.string.please_enter_title)
         } else if (binding.description.text.isNullOrEmpty()) {
             binding.description.error = getString(R.string.please_enter_description)
+        } else if (binding.category.text.isNullOrEmpty()) {
+            binding.category.error = getString(R.string.please_enter_cat)
         } else {
             noteModel?.let {
                 it.apply {
                     title = binding.title.string()
                     description = binding.description.string()
+                    category = binding.category.string()
                     viewModel.updateNote(this)
                 }
             } ?: run {
                 viewModel.insertNote(
                     NoteModel(
-                        category = "X",
+                        category = binding.category.string(),
                         title = binding.title.string(),
                         description = binding.description.string()
                     )
